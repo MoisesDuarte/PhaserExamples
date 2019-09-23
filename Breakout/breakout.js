@@ -30,6 +30,7 @@ const game = new Phaser.Game(config);
 
 // Asset Loading
 function preload() {
+    this.load.image('background', 'assets/images/background.png');
     this.load.image('ball', 'assets/images/ball_32_32.png');
     this.load.image('paddle', 'assets/images/paddle_128_32.png');
     this.load.image('brick1', 'assets/images/brick1_64_32.png');
@@ -39,6 +40,8 @@ function preload() {
 
 // Game Setup
 function create() {
+    this.add.image(400, 320, 'background');
+
     player = this.physics.add.sprite(
         400, // x
         600, // y

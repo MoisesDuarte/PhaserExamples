@@ -49,7 +49,7 @@ function create() {
     this.add.image(400, 320, 'background');
 
     // Initialize SoundEffects
-    this.levelSound = this.sound.add('levelmusic');
+    this.levelSound = this.sound.add('levelmusic', {volume: 0.3});
     this.gameStartSound = this.sound.add('gamestart');
     this.gameOverSound = this.sound.add('gameover');
     this.brickHitSound = this.sound.add('brickhit');

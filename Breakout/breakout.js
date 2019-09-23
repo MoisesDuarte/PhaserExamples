@@ -42,6 +42,43 @@ function preload() {
     this.load.audio('gameover', 'assets/audio/gameover.ogg');
     this.load.audio('brickhit', 'assets/audio/blockhit.ogg');
     this.load.audio('paddlehit', 'assets/audio/paddlehit.ogg');
+
+    // Loading ProgressBar
+    var progressBar = this.add.graphics();
+    var progressBox = this.add.graphics();
+    progressBox.fillStyle(0x222222, 0.8);
+    progressBox.fillRect(240, 270, 320, 50);
+
+    // Loading Text
+    loadingText = this.add.text(
+        this.physics.world.bounds.width / 2,
+        this.physics.world.bounds.height / 2 - 70,
+        'Carregando...',
+        {
+            fontFamily: 'Monaco, Courier, monospace',
+            fontSize: '20px',
+            fill: '#fff'
+        }
+    );
+    loadingText.setOrigin(0.5);
+
+    // Loading listeners
+    this.load.on('progress', function (value) {
+        console.log(value);
+        progressBar.clear();
+        progressBar.fillStyle(0xffffff, 1);
+        progressBar.fillRect(250, 280, 300 * value, 30);
+    });
+
+    this.load.on('fileprogress', function (file) {
+        console.log(file.src);
+    });
+
+    this.load.on('complete', function () {
+        console.log('complete');
+        progressBar.destroy();
+        progressBox.destroy();
+    });
 }
 
 // Game Setup
@@ -132,7 +169,7 @@ function create() {
         'Aperte ESPAÇO para iniciar',
         {
             fontFamily: 'Monaco, Courier, monospace',
-            fontSize: '40px',
+            fontSize: '20px',
             fill: '#fff'
         }
     );
@@ -201,7 +238,7 @@ function update() {
     }
 }
 
-// Game Functions
+// GAME FUNCTIONS
 function isGameOver(world) {
     return ball.body.y > world.bounds.height; // Check if ball is out of bounds (vertical down)
 }

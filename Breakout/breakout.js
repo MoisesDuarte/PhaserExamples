@@ -1,35 +1,33 @@
-// Global variables
-let player, ball, violetBricks, yellowBricks, redBricks, cursors; // for sprite data
-let gameStarted = false; // for game state tracking
-let openingText, gameOverText, playerWonText; // for game messages
-
 const config = {
     type: Phaser.AUTO, // Rendering
     parent: 'game', // Id of the element which will display the game
     width: 800,
     height: 640,
-    scale: {
-        mode: Phaser.Scale.RESIZE, // Game resizes to fit div
-        autoCenter: Phaser.Scale.CENTER_BOTH // Center to div if necessary
-    },
     scene: {
-        preload,
-        create,
-        update,
+        key: 'main',
+        preload: preload,
+        create: create,
+        update: update,
     },
     physics: {
         default: 'arcade',
         arcade: {
             gravity: false, // Disables gravity
-            debug: false,
+            debug: false
         },
     }
 };
 
 const game = new Phaser.Game(config);
 
-// Asset Loading
+// GAME VARIABLES
+let player, ball, violetBricks, yellowBricks, redBricks, cursors; // for sprite data
+let gameStarted = false; // for game state tracking
+let openingText, gameOverText, playerWonText; // for game messages
+
+// MAIN STATE FUNCTIONS
 function preload() {
+    // TODO: Runs once, asset Loading
     this.load.image('background', 'assets/images/background.png');
     this.load.image('ball', 'assets/images/ball_32_32.png');
     this.load.image('paddle', 'assets/images/paddle_128_32.png');
@@ -81,8 +79,9 @@ function preload() {
     });
 }
 
-// Game Setup
+
 function create() {
+    // TODO: Runs once, game setup
     this.add.image(400, 320, 'background');
 
     // Initialize SoundEffects
@@ -206,8 +205,9 @@ function create() {
 
 }
 
-// Game Loop
+
 function update() {
+    // TODO: Runs once per frame, game logic
     if (isGameOver(this.physics.world)) {
         gameOverText.setVisible(true);
         ball.disableBody(true, true); // hides ball

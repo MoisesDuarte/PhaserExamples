@@ -1,27 +1,36 @@
 // GAME CONFIG
 const config = {
     type: Phaser.AUTO, 
-    parent: 'game', 
     width: 800,
-    height: 640,
-    scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.CENTER_BOTH },
-    scene: { preload, create, update },
-    physics: { default: 'arcade', arcade: { debug: false }},
+    height: 600,
+    scene: {
+        key: 'main',
+        preload: preload,
+        create: create,
+        update: update,
+    },
+    physics: { 
+        default: 'arcade', 
+        arcade: { 
+            gravity: { y: 500 }, 
+            debug: false 
+        }
+    },
 };
 
 const game = new Phaser.Game(config);
 
 // MAIN STATE FUNCTIONS
 function preload() {
-    // TODO: Asset Loading
+    // TODO: Runs once, asset Loading
 };
 
 function create() {
-    // TODO: Game Setup
+    // TODO: Runs once, game setup
 };
 
 function update() {
-    // TODO: Game Loop
+    // TODO: Runs once per frame, game logic
 };
 
 // GAME FUNCTIONS

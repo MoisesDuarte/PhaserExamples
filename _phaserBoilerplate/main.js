@@ -25,4 +25,3 @@ function update() {
 };
 
 // GAME FUNCTIONS
-// TODO: Game Handling Functions

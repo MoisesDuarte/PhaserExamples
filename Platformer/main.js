@@ -1,11 +1,14 @@
 // GAME CONFIG
 const config = {
     type: Phaser.AUTO, 
-    parent: 'game-container', 
     width: 800,
     height: 600,
-    scale: { mode: Phaser.Scale.RESIZE, autoCenter: Phaser.Scale.CENTER_BOTH },
-    scene: { preload, create, update },
+    scene: {
+        key: 'main',
+        preload: preload,
+        create: create,
+        update: update,
+    },
     physics: { default: 'arcade', arcade: { gravity: { y: 500 }, debug: false }},
 };
 
@@ -32,18 +35,16 @@ function create() {
     // Drawing and setting the level
     map = this.make.tilemap({key: 'map'}); // Load the map
     
-    // tiles for the ground layer
+    // Setting tilesheet, map layers and collision
     var groundTiles = map.addTilesetImage('tiles');
-    // create the ground layer
     groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
-    // the player will collide with this layer
     groundLayer.setCollisionByExclusion([-1]);
 
-    // set the boundaries of our game world
+    // Setting gameworld boundaries
     this.physics.world.bounds.width = groundLayer.width;
     this.physics.world.bounds.height = groundLayer.height;
 
-    // create the player sprite    
+    // Setting the Player Sprite  
     player = this.physics.add.sprite(200, 200, 'player');
     player.setBounce(0.2); // our player will bounce from items
     player.setCollideWorldBounds(true); // don't go out of the map  
@@ -53,19 +54,45 @@ function create() {
 
     // Settings Input Cursors
     cursors = this.input.keyboard.createCursorKeys();
+
+    // Camera Settings
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels); // Camera inside map bounds
+    this.cameras.main.startFollow(player); // Camera follows player
+    this.cameras.main.setBackgroundColor('#ccccff'); // Background color settings
+
+    // Setting Player Animation
+    this.anims.create({
+        key: 'walk',
+        frames: this.anims.generateFrameNames('player', { prefix: 'p1_walk', start: 1, end: 11, zeroPad: 2 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'idle',
+        frames: [{key: 'player', frame: 'p1_stand'}],
+        frameRate: 10
+    });
+
 };
 
 function update() {
     // TODO: Runs once per frame, game logic
-    // Input Handling
-    if (cursors.left.isDown) { // Left
+    // Input and Animation Handling
+    if (cursors.left.isDown) { 
         player.body.setVelocityX(-200);
-    } else if (cursors.right.isDown) { // Right
-        player.body.setVelocity(200); 
-    } else { // Idle
+        player.anims.play('walk', true);
+        player.flipX = true;
+    } else if (cursors.right.isDown) { 
+        player.body.setVelocityX(200); 
+        player.anims.play('walk', true);
+        player.flipX = false;
+    } else { 
         player.body.setVelocityX(0);
+        player.anims.play('idle', true);
     }
-    if ((cursors.space.isDown || cursors.up.isDown) && player.body.onFloor()) { // Jump
+    
+    if ((cursors.space.isDown || cursors.up.isDown) && player.body.onFloor()) { 
         player.body.setVelocityY(-500);
     }
     
